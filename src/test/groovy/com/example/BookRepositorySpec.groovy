@@ -31,8 +31,8 @@ class BookRepositorySpec extends Specification {
 
     void "test list books"() {
         when:
-        List<Book> list = bookRepository.findAll()
-
+        Flux<Book> books = bookRepository.findAll()
+        List<Book> list = books.collectList().block()
         then:
         list.size() == 5
     }
