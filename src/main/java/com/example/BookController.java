@@ -2,19 +2,32 @@ package com.example;
 
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
-import reactor.core.publisher.Flux;
+import jakarta.inject.Inject;
+import org.reactivestreams.Publisher;
+import reactor.core.publisher.Mono;
 
-@Controller("/books")
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.rules.SecurityRule;
+
+@Secured(SecurityRule.IS_ANONYMOUS)
+@Controller("/")
 public class BookController {
 
-    private final BookRepository bookRepository;
+    @Inject
+    private BookService bookService;
 
-    public BookController(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
+    @Get("/setup")
+    Mono<Void> setupData() {
+        return bookService.setupData();
     }
 
-    @Get("/")
-    Flux<Book> all() {
-        return bookRepository.findAll();
+    @Get("/all")
+    Publisher<Book> all() {
+        return bookService.getAll();
+    }
+
+    @Get("/add")
+    Publisher<Book> add(String title) {
+        return bookService.add(title);
     }
 }

@@ -1,6 +1,7 @@
 micronaut:
   application:
     name: demoR2dbc
+
 r2dbc:
   datasources:
     default:
@@ -11,4 +12,4 @@ r2dbc:
       password: ''
       options:
         DB_CLOSE_DELAY: -1
-        protocol : mem
+        protocol: mem
